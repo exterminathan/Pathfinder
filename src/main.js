@@ -5,8 +5,7 @@
 // Pathfinder demo
 //
 // An example of pathfinding in Phaser using the EasyStar.js pathfinder 
-// plugin for Phaser
-// https://github.com/appsbu-de/phaser_plugin_pathfinding
+// https://github.com/prettymuchbryce/easystarjs
 // 
 // Assets from the following Kenney Asset packs
 // Tiny Dungeon
@@ -24,16 +23,6 @@ let config = {
     render: {
         pixelArt: true  // prevent pixel art from getting blurred when scaled
     },
-    physics: {
-        default: 'arcade',
-        arcade: {
-            debug: true,
-            gravity: {
-                x: 0,
-                y: 0
-            }
-        }
-    },
     width: 1280,
     height: 800,
     scene: [Load, Pathfinder]
@@ -41,6 +30,6 @@ let config = {
 
 var cursors;
 const SCALE = 2.0;
-var my = {sprite: {}, text: {}};
+var my = {sprite: {}};
 
 const game = new Phaser.Game(config);
