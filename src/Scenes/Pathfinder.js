@@ -102,15 +102,43 @@ class Pathfinder extends Phaser.Scene {
     // This array can then be given to Easystar for use in path finding.
     layersToGrid() {
         let grid = [];
-        // Initialize grid as two-dimensional array
-        // TODO: write initialization code
-
-        // Loop over layers to find tile IDs, store in grid
-        // TODO: write this loop
-
+        let width = this.map.width;
+        let height = this.map.height;
+    
+        console.log("Initializing grid with dimensions:", width, height);
+    
+        // Initialize the grid with default values
+        for (let y = 0; y < height; y++) {
+            grid[y] = [];
+            for (let x = 0; x < width; x++) {
+                grid[y][x] = 0; // Default value, assuming 0 is not a valid tile ID
+            }
+        }
+    
+        // Iterate through each layer
+        for (let layer of [this.groundLayer, this.treesLayer, this.housesLayer]) {
+            console.log("Processing layer:", layer.layer.name);
+            // Iterate through each tile position
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    // Get the tile at the current position using getTileAt
+                    let tile = this.map.getTileAt(x, y, true, layer);
+                    // If there is a tile, update the grid with the tile ID
+                    if (tile !== null && tile.index !== -1) {
+                        grid[y][x] = tile.index;
+                        console.log(`Setting grid[${y}][${x}] to tile index ${tile.index}`);
+                    }
+                }
+            }
+        }
+    
+        // Log the constructed grid for debugging
+        console.log("Constructed grid:", grid);
+    
+        // Return the constructed grid
         return grid;
     }
-
+    
 
     handleClick(pointer) {
         let x = pointer.x / this.SCALE;
@@ -159,7 +187,12 @@ class Pathfinder extends Phaser.Scene {
     // uses the value of the cost property to inform EasyStar, using EasyStar's
     // setTileCost(tileID, tileCost) function.
     setCost(tileset) {
-        // TODO: write this function
+        for (let tileID = tileset.firstgid; tileID < tileset.total; tileID++) {
+            let props = tileset.getTileProperties(tileID);
+            if (props != null && props.cost != null) {
+                this.finder.setTileCost(tileID, props.cost);
+            }
+        }
     }
 
 
